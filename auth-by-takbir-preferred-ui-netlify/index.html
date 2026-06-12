@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Auth By Takbir | Weeknd Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#55c7ff;--blue2:#0a77ff;--cyan:#9be8ff;--text:#eefaff;--muted:rgba(238,250,255,.74);--line:rgba(137,219,255,.28);--danger:#ff4d7d;--ok:#4dffcf}
+html,body{height:100%;font-family:Poppins,system-ui,sans-serif;color:var(--text);overflow-x:hidden;background:#020713}
+.video-wrap{position:fixed;inset:0;z-index:0;overflow:hidden;background:#020713}
+#bgVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(5px) brightness(.62) saturate(1.18);transform:scale(1.04)}
+.video-tint{position:fixed;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,8,20,.05),rgba(0,8,20,.18) 48%,rgba(0,5,15,.28)),radial-gradient(circle at 50% 18%,rgba(84,197,255,.09),transparent 33%);pointer-events:none}
+.soft-glow{position:fixed;inset:-80px;z-index:2;background:radial-gradient(circle at 18% 20%,rgba(27,137,255,.20),transparent 30%),radial-gradient(circle at 84% 35%,rgba(80,220,255,.13),transparent 30%);filter:blur(42px);pointer-events:none}
+#spark{position:fixed;inset:0;z-index:3;pointer-events:none;overflow:hidden}#spark i{position:absolute;bottom:-20px;width:3px;height:3px;border-radius:50%;background:rgba(155,232,255,.75);box-shadow:0 0 16px rgba(85,199,255,.70);animation:rise linear infinite}@keyframes rise{from{transform:translateY(0) scale(.6);opacity:0}12%{opacity:1}to{transform:translateY(-112vh) scale(1.7);opacity:0}}
+.enter{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:rgba(2,7,19,.44);backdrop-filter:blur(12px);transition:.75s}.enter.hide{opacity:0;visibility:hidden}.enter-card{text-align:center;width:min(90vw,440px);padding:34px 26px;border:1px solid rgba(116,215,255,.32);border-radius:30px;background:rgba(5,18,38,.32);box-shadow:0 0 55px rgba(0,120,255,.22),inset 0 0 30px rgba(255,255,255,.035);backdrop-filter:blur(10px)}.enter-card h1{font-family:Orbitron,sans-serif;font-size:clamp(24px,7vw,40px);letter-spacing:3px;text-shadow:0 0 22px rgba(85,199,255,.9);margin-bottom:10px}.enter-card p{color:var(--muted);font-size:14px;margin-bottom:22px}.enter-card button,.primary{border:0;cursor:pointer;color:#001326;font-weight:900;letter-spacing:1px;border-radius:999px;padding:14px 25px;background:linear-gradient(135deg,#ddf8ff,#55c7ff,#0b83ff);box-shadow:0 0 30px rgba(85,199,255,.62);transition:.25s}.enter-card button:active,.primary:active{transform:scale(.96)}
+.loading-screen{position:fixed;inset:0;z-index:49;display:grid;place-items:center;background:rgba(2,7,19,.30);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:.45s}.loading-screen.show{opacity:1;visibility:visible}.loader-box{text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px}.glow-loader{width:96px;height:96px;border-radius:50%;position:relative;background:conic-gradient(from 0deg,transparent 0 28%,rgba(155,232,255,.95),#0a77ff,transparent 78%);animation:spin 1s linear infinite;filter:drop-shadow(0 0 22px rgba(85,199,255,.7))}.glow-loader:before{content:"";position:absolute;inset:8px;border-radius:50%;background:rgba(2,7,19,.76);box-shadow:inset 0 0 22px rgba(85,199,255,.28)}.glow-loader:after{content:"";position:absolute;inset:28px;border-radius:50%;background:radial-gradient(circle,#dff9ff,#55c7ff 45%,#0a77ff);box-shadow:0 0 30px rgba(85,199,255,.9);animation:pulse 1.3s ease-in-out infinite}.loader-text{font-family:Orbitron,sans-serif;font-size:12px;letter-spacing:3px;color:var(--cyan);text-shadow:0 0 18px rgba(85,199,255,.9)}@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{0%,100%{transform:scale(.82);opacity:.75}50%{transform:scale(1.05);opacity:1}}
+.page{position:relative;z-index:10;min-height:100vh;display:grid;place-items:center;padding:32px 16px;opacity:0;transform:translateY(14px);transition:opacity 1s ease,transform 1s ease}.page.show{opacity:1;transform:translateY(0)}
+.app{width:min(96vw,920px);min-height:590px;border:1px solid var(--line);border-radius:34px;background:linear-gradient(145deg,rgba(8,23,48,.28),rgba(2,8,20,.18));backdrop-filter:blur(6px);box-shadow:0 22px 80px rgba(0,0,0,.42),0 0 46px rgba(53,171,255,.22),inset 0 0 24px rgba(255,255,255,.04);overflow:hidden;position:relative}.app:before{content:"";position:absolute;inset:-2px;background:linear-gradient(120deg,transparent,rgba(99,211,255,.18),transparent);transform:translateX(-120%);animation:shine 5s ease-in-out infinite}@keyframes shine{0%,50%{transform:translateX(-120%)}75%,100%{transform:translateX(120%)}}
+.inner{position:relative;z-index:2}.topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid rgba(137,219,255,.14)}.brand{font-family:Orbitron,sans-serif;font-size:clamp(22px,5vw,34px);font-weight:900;letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 24px rgba(85,199,255,.85)}.sound-pill{font-family:Orbitron,sans-serif;font-size:10px;letter-spacing:1px;padding:8px 12px;border-radius:999px;border:1px solid rgba(137,219,255,.28);background:rgba(0,20,45,.24);color:var(--cyan);backdrop-filter:blur(5px);cursor:pointer}
+.layout{display:grid;grid-template-columns:180px 1fr;min-height:520px}.sidebar{border-right:1px solid rgba(137,219,255,.14);padding:16px 12px;background:rgba(0,4,16,.12)}.tab{width:100%;border:1px solid transparent;background:rgba(255,255,255,.04);color:var(--text);padding:13px 14px;border-radius:16px;margin-bottom:10px;display:flex;gap:10px;align-items:center;cursor:pointer;font-weight:700}.tab.active{border-color:rgba(85,199,255,.34);background:rgba(85,199,255,.14);box-shadow:0 0 20px rgba(85,199,255,.18)}.content{padding:24px;display:none}.content.active{display:block;animation:butterfly .75s cubic-bezier(.2,1.1,.2,1) both}@keyframes butterfly{from{opacity:0;transform:translateY(24px) scale(.94);filter:blur(7px)}to{opacity:1;transform:none;filter:blur(0)}}
+.panel-title{font-family:Orbitron,sans-serif;letter-spacing:2px;font-size:21px;margin-bottom:8px}.sub{color:var(--muted);font-size:13px;margin-bottom:22px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:flex;flex-direction:column;gap:7px}.field label{font-family:Orbitron,sans-serif;font-size:11px;color:var(--cyan);letter-spacing:1px}.field input{width:100%;border:1px solid rgba(155,232,255,.17);border-radius:16px;background:rgba(0,6,18,.34);color:var(--text);padding:14px 14px;outline:none;backdrop-filter:blur(6px);font-weight:600}.field input:focus{border-color:rgba(85,199,255,.6);box-shadow:0 0 22px rgba(85,199,255,.18)}.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.btn{border:1px solid rgba(155,232,255,.18);border-radius:18px;background:rgba(255,255,255,.06);color:var(--text);padding:14px 12px;cursor:pointer;font-weight:800;backdrop-filter:blur(4px);transition:.25s}.btn:hover{transform:translateY(-2px);border-color:rgba(85,199,255,.55);box-shadow:0 0 24px rgba(85,199,255,.22)}.btn.delete:hover{border-color:rgba(255,77,125,.6);box-shadow:0 0 24px rgba(255,77,125,.18)}
+.status{margin-top:16px;min-height:24px;color:var(--cyan);font-size:13px}.list-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.count{border:1px solid rgba(155,232,255,.18);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.055);font-family:Orbitron,sans-serif;font-size:11px;color:var(--cyan)}.user-list{display:grid;gap:10px;max-height:390px;overflow:auto;padding-right:5px}.user-card{display:grid;grid-template-columns:1.1fr 1.1fr .9fr;gap:10px;border:1px solid rgba(155,232,255,.16);background:rgba(255,255,255,.055);border-radius:18px;padding:13px 14px;backdrop-filter:blur(5px)}.user-card b{color:var(--cyan);font-size:11px;font-family:Orbitron,sans-serif}.user-card span{display:block;margin-top:4px;font-weight:700;word-break:break-word}.warn{margin-top:12px;color:rgba(238,250,255,.62);font-size:12px;line-height:1.55}.music{position:fixed;right:18px;bottom:18px;z-index:20;border:1px solid rgba(155,232,255,.35);background:rgba(5,18,38,.38);color:var(--text);backdrop-filter:blur(12px);border-radius:999px;padding:12px 15px;font-weight:700;box-shadow:0 0 24px rgba(85,199,255,.22);cursor:pointer}.music.playing{box-shadow:0 0 34px rgba(85,199,255,.62)}
+@media(max-width:720px){#bgVideo{filter:blur(5px) brightness(.54) saturate(1.1);transform:scale(1.1)}.page{padding:18px 10px}.app{border-radius:26px}.topbar{padding:16px 14px}.layout{grid-template-columns:1fr}.sidebar{display:flex;gap:8px;overflow:auto;border-right:0;border-bottom:1px solid rgba(137,219,255,.14)}.tab{white-space:nowrap;margin:0}.content{padding:18px 14px}.grid,.actions{grid-template-columns:1fr}.user-card{grid-template-columns:1fr}.music{right:12px;bottom:12px;font-size:13px}}
+</style>
+</head>
+<body>
+<div class="video-wrap"><video id="bgVideo" autoplay muted loop playsinline preload="auto"><source src="https://files.catbox.moe/3r63bq.mp4" type="video/mp4"></video></div>
+<div class="video-tint"></div><div class="soft-glow"></div><div id="spark"></div>
+<div class="enter" id="enterScreen"><div class="enter-card"><h1>AUTH BY TAKBIR</h1><p>Tap to enter with sound. Admin panel starts from 0:24.</p><button id="enterBtn">🎵 Enable Sound & Enter</button></div></div>
+<div class="loading-screen" id="loadingScreen"><div class="loader-box"><div class="glow-loader"></div><div class="loader-text">LOADING ADMIN PANEL</div></div></div>
+<main class="page" id="page"><section class="app"><div class="inner"><div class="topbar"><div class="brand">Auth By Takbir</div><button class="sound-pill" id="miniSound">🔊 Sound On</button></div><div class="layout"><aside class="sidebar"><button class="tab active" data-tab="manage">⚙️ Manage</button><button class="tab" data-tab="users">👥 Users</button></aside><section class="content active" id="manage"><h2 class="panel-title">Authorization Control</h2><p class="sub">Create, delete, or create free user. Theme kept in The Weeknd neon blue style.</p><div class="grid"><div class="field"><label>Username</label><input id="username" placeholder="Enter username"></div><div class="field"><label>Password</label><input id="password" placeholder="Enter password" type="password"></div></div><div class="actions"><button class="btn" id="createBtn">Create User</button><button class="btn delete" id="deleteBtn">Delete User</button><button class="btn" id="freeBtn">Create Free User</button></div><div class="status" id="status"></div><p class="warn">GitHub backend active. Token Netlify environment variable e hidden thakbe.</p></section><section class="content" id="users"><div class="list-head"><div><h2 class="panel-title">All Users</h2><p class="sub">Users tab e click korlei list refresh hobe.</p></div><div class="count" id="count">0 users</div></div><div class="user-list" id="userList"></div></section></div></div></section></main><button class="music" id="musicBtn">🎵 Enter first</button>
+<script>
+const START_AT=24,enter=document.getElementById('enterScreen'),enterBtn=document.getElementById('enterBtn'),loading=document.getElementById('loadingScreen'),page=document.getElementById('page'),video=document.getElementById('bgVideo'),musicBtn=document.getElementById('musicBtn'),miniSound=document.getElementById('miniSound'),spark=document.getElementById('spark');
+for(let i=0;i<54;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';const size=(Math.random()*3+1).toFixed(1)+'px';s.style.width=size;s.style.height=size;s.style.animationDuration=(Math.random()*9+7)+'s';s.style.animationDelay=Math.random()*7+'s';spark.appendChild(s)}
+async function startExperience(){enter.classList.add('hide');loading.classList.add('show');enterBtn.disabled=true;try{video.currentTime=START_AT}catch(e){}video.muted=false;video.volume=.48;try{await video.play()}catch(e){video.muted=true;await video.play().catch(()=>{})}const reveal=()=>{loading.classList.remove('show');page.classList.add('show');syncSound()};if(video.readyState>=3)setTimeout(reveal,950);else{video.addEventListener('canplay',()=>setTimeout(reveal,650),{once:true});setTimeout(reveal,2600)}}
+function syncSound(){musicBtn.textContent=video.muted?'🔇 Tap for Sound':'🔊 Playing';miniSound.textContent=video.muted?'🔇 Muted':'🔊 Sound On';musicBtn.classList.toggle('playing',!video.muted)}function toggleSound(){if(!page.classList.contains('show'))return startExperience();video.muted=!video.muted;if(!video.muted)video.volume=.48;video.play().catch(()=>{});syncSound()}enterBtn.onclick=startExperience;musicBtn.onclick=toggleSound;miniSound.onclick=toggleSound;video.addEventListener('ended',()=>{video.currentTime=START_AT;video.play().catch(()=>{})});
+
+const API="/.netlify/functions/github-auth";
+const u=document.getElementById('username'),p=document.getElementById('password'),status=document.getElementById('status'),list=document.getElementById('userList'),count=document.getElementById('count');
+
+function setStatus(msg,ok=true){
+  status.style.color=ok?'#9be8ff':'#ff4d7d';
+  status.textContent=msg;
+  setTimeout(()=>status.textContent='',4500);
+}
+function esc(s){
+  return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+}
+function clearFields(){u.value='';p.value=''}
+
+async function api(action,data={}){
+  const res=await fetch(API,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({action,...data})
+  });
+  const json=await res.json().catch(()=>({}));
+  if(!res.ok) throw new Error(json.error||"Request failed");
+  return json;
+}
+
+function renderUsers(users=[]){
+  count.textContent=users.length+' users';
+  list.innerHTML=users.length?'':'<div class="user-card"><span>No users created yet.</span></div>';
+  users.forEach(x=>{
+    const d=document.createElement('div');
+    d.className='user-card';
+    d.innerHTML=`<div><b>Username</b><span>${esc(x.username)}</span></div><div><b>Password</b><span>${esc(x.password)}</span></div><div><b>IP/Type</b><span>${esc(x.ip||'NONE')}</span></div>`;
+    list.appendChild(d);
+  });
+}
+
+async function loadUsers(){
+  try{
+    list.innerHTML='<div class="user-card"><span>Loading users...</span></div>';
+    const data=await api("list");
+    renderUsers(data.users||[]);
+  }catch(e){
+    list.innerHTML=`<div class="user-card"><span style="color:#ff4d7d">${esc(e.message)}</span></div>`;
+  }
+}
+
+async function createUser(type){
+  const username=u.value.trim(),password=p.value.trim();
+  if(!username||!password)return setStatus('Please enter both username and password.',false);
+  setStatus('Working...');
+  try{
+    await api(type==='Unlimited'?'createFree':'create',{username,password});
+    clearFields();
+    setStatus(type==='Unlimited'?'Free user created successfully! Wait a few minutes for GitHub raw cache.':'User created successfully! Wait a few minutes for GitHub raw cache.');
+    await loadUsers();
+  }catch(e){setStatus(e.message,false)}
+}
+
+async function deleteUser(){
+  const username=u.value.trim(),password=p.value.trim();
+  if(!username||!password)return setStatus('Please enter both username and password.',false);
+  setStatus('Working...');
+  try{
+    await api("delete",{username,password});
+    clearFields();
+    setStatus('User deleted successfully! Wait a few minutes for GitHub raw cache.');
+    await loadUsers();
+  }catch(e){setStatus(e.message,false)}
+}
+
+document.getElementById('createBtn').onclick=()=>createUser('NONE');
+document.getElementById('freeBtn').onclick=()=>createUser('Unlimited');
+document.getElementById('deleteBtn').onclick=deleteUser;
+
+document.querySelectorAll('.tab').forEach(btn=>btn.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.content').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+  if(btn.dataset.tab==='users')loadUsers();
+});
+loadUsers();
+</script>
+</body>
+</html>
